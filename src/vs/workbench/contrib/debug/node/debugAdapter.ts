@@ -204,6 +204,10 @@ export class ExecutableDebugAdapter extends StreamDebugAdapter {
 				if (options.cwd) {
 					spawnOptions.cwd = options.cwd;
 				}
+				if (!this.outputService) {
+					// prevent blocking the debug process on writing stderr
+					spawnOptions.stdio = ['pipe', 'pipe', 'ignore'];
+				}
 				this.serverProcess = cp.spawn(command, args, spawnOptions);
 			}
 
